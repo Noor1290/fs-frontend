@@ -1,7 +1,7 @@
 // ===========================
 // 🌐 API CONFIG
 // ===========================
-const BACKEND_ORIGIN = "http://localhost:3000";   // backend host
+const BACKEND_ORIGIN = "https://fs-backend-6isw.onrender.com";   // backend host
 const API_BASE       = `${BACKEND_ORIGIN}/api`;
 
 new Vue({
