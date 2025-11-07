@@ -56,19 +56,23 @@ new Vue({
 
   methods: {
     normalize(rows) {
-      return rows.map(l => {
-        const path = String(l.image || '').replace(/^\/?/, '');
-        const full = /^https?:\/\//.test(path) ? path : `${BACKEND_ORIGIN}/${path}`;
-        return {
-          id: l._id,
-          subject: l.topic,
-          location: l.location,
-          price: l.price,
-          spaces: l.space,
-          image: full
-        };
-      });
-    },
+  return rows.map(l => {
+    const path = String(l.image || '').replace(/^\/?/, '');
+    // ✅ prepend '/images/' if not already an absolute URL
+    const full = /^https?:\/\//.test(path)
+      ? path
+      : `${BACKEND_ORIGIN}/images/${path}`;
+    return {
+      id: l._id,
+      subject: l.topic,
+      location: l.location,
+      price: l.price,
+      spaces: l.space,
+      image: full
+    };
+  });
+},
+
 
     async loadLessons(q = '') {
       try {
