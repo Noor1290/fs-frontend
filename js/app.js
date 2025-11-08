@@ -61,7 +61,7 @@ new Vue({
     // ✅ prepend '/images/' if not already an absolute URL
     const full = /^https?:\/\//.test(path)
       ? path
-      : `${BACKEND_ORIGIN}/images/${path}`;
+      : `${BACKEND_ORIGIN}/${path}`;
     return {
       id: l._id,
       subject: l.topic,
