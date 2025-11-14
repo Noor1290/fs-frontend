@@ -2,30 +2,33 @@
 // 🌐 API CONFIG
 // ===========================
 const BACKEND_ORIGIN = "https://fs-backend-6isw.onrender.com";   // backend host
-const API_BASE       = `${BACKEND_ORIGIN}/api`;
+const API_BASE       = `${BACKEND_ORIGIN}/api`;                  
 
 new Vue({
   el: '#app',
 
   data: () => ({
+    // UI state
     showCart: false,
     search: '',
-    searching: false,          // shows spinner in SearchBar
+    searching: false,          // show/hide loading state
     _searchTimer: null,        // debounce handle
-    _searchDelayMs: 300,
+    _searchDelayMs: 300,       // debounce delay (ms)
 
+    // sorting / checkout state
     sortKey: 'subject',        // subject | location | price | spaces
     sortOrder: 1,
     name: '',
     phone: '',
     submitted: false,
 
-    lessons: [],               // normalized list
-    cart: []                   // { id, subject, price, image, qty }
+    // data collections
+    lessons: [],               // normalized lessons from backend
+    cart: []                   // items: { id, subject, price, image, qty }
   }),
 
   computed: {
-    // We now rely on BACKEND search; no client-side filtering
+    // sort in-memory list (server already filters via search)
     sortedLessons() {
       const key = this.sortKey, order = this.sortOrder;
       return [...this.lessons].sort((a, b) => {
@@ -34,15 +37,16 @@ new Vue({
         return (A < B ? -1 : A > B ? 1 : 0) * order;
       });
     },
-    cartCount() { return this.cart.reduce((s, i) => s + i.qty, 0); },
-    cartTotal() { return this.cart.reduce((s, i) => s + i.price * i.qty, 0); },
+    cartCount() { return this.cart.reduce((s, i) => s + i.qty, 0); },           // total items
+    cartTotal() { return this.cart.reduce((s, i) => s + i.price * i.qty, 0); }, // £ total
     spacesMap() {
+      // quick lookup: lessonId -> remaining spaces
       const m = {}; this.lessons.forEach(l => m[l.id] = l.spaces); return m;
     }
   },
 
   watch: {
-    // Debounced backend search
+    // Debounced backend search whenever 'search' changes
     search: {
       immediate: false,
       handler(q) {
@@ -55,25 +59,26 @@ new Vue({
   },
 
   methods: {
+    // map backend documents to UI-friendly shape
     normalize(rows) {
-  return rows.map(l => {
-    const path = String(l.image || '').replace(/^\/?/, '');
-    // ✅ prepend '/images/' if not already an absolute URL
-    const full = /^https?:\/\//.test(path)
-      ? path
-      : `${BACKEND_ORIGIN}/${path}`;
-    return {
-      id: l._id,
-      subject: l.topic,
-      location: l.location,
-      price: l.price,
-      spaces: l.space,
-      image: full
-    };
-  });
-},
+      return rows.map(l => {
+        const path = String(l.image || '').replace(/^\/?/, '');
+        // use absolute URL if provided, else prefix with backend origin
+        const full = /^https?:\/\//.test(path)
+          ? path
+          : `${BACKEND_ORIGIN}/${path}`;
+        return {
+          id: l._id,
+          subject: l.topic,
+          location: l.location,
+          price: l.price,
+          spaces: l.space,
+          image: full
+        };
+      });
+    },
 
-
+    // fetch all lessons or perform search (backend filters)
     async loadLessons(q = '') {
       try {
         this.searching = true;
@@ -90,21 +95,24 @@ new Vue({
       }
     },
 
+    // toggle between lessons and cart (block if cart empty)
     toggleCart() {
       if (!this.showCart && this.cartCount === 0) return;
       this.showCart = !this.showCart;
     },
 
-    // 🛒 Add to cart + decrement spaces (reactively)
+    // 🛒 Add to cart and decrement available spaces (reactive)
     addToCart(lesson) {
       if (!lesson || lesson.spaces === 0) return;
 
+      // decrement spaces on the corresponding lesson
       const idx = this.lessons.findIndex(l => l.id === lesson.id);
       if (idx !== -1) {
         const updated = { ...this.lessons[idx], spaces: this.lessons[idx].spaces - 1 };
         this.$set(this.lessons, idx, updated);
       }
 
+      // add/increment in cart
       const found = this.cart.find(i => i.id === lesson.id);
       if (found) found.qty += 1;
       else this.cart.push({
@@ -112,6 +120,7 @@ new Vue({
       });
     },
 
+    // increase cart qty if spaces remain
     increment(id) {
       const li = this.lessons.findIndex(x => x.id === id);
       const c  = this.cart.find(x => x.id === id);
@@ -123,6 +132,7 @@ new Vue({
       }
     },
 
+    // decrease cart qty; restore spaces; remove if qty hits 0
     decrement(id) {
       const li = this.lessons.findIndex(x => x.id === id);
       const ci = this.cart.findIndex(x => x.id === id);
@@ -139,6 +149,7 @@ new Vue({
       }
     },
 
+    // remove from cart completely; return all reserved spaces
     removeById(id) {
       const li = this.lessons.findIndex(x => x.id === id);
       const ci = this.cart.findIndex(x => x.id === id);
@@ -150,16 +161,18 @@ new Vue({
       this.cart = this.cart.filter(i => i.id !== id);
     },
 
-    // 💳 Checkout (POST /orders). If your backend also updates space, you can reload afterward.
+    // 💳 POST order; then clear UI and optionally reload
     async checkout() {
       const isName  = /^[A-Za-z\s]+$/.test(this.name) && this.name.trim().length > 1;
       const isPhone = /^\d+$/.test(this.phone) && this.phone.length >= 7;
+
       if (!(this.cart.length > 0 && isName && isPhone)) {
         alert("⚠️ Please enter valid name, phone, and at least one item.");
         return;
       }
 
       try {
+        // 1️⃣ Submit order (POST)
         const res = await fetch(`${API_BASE}/orders`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -169,25 +182,42 @@ new Vue({
             items: this.cart.map(c => ({ lesson: c.id, spaces: c.qty }))
           })
         });
+
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
+        // 2️⃣ Update lesson spaces in database (PUT)
+        for (const item of this.cart) {
+          const lesson = this.lessons.find(l => l.id === item.id);
+          if (!lesson) continue;
+
+          await fetch(`${API_BASE}/lessons/${item.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              space: lesson.spaces   // send updated space value
+            })
+          });
+        }
+
+        // 3️⃣ Refresh local lessons from backend
+        await this.loadLessons();
+
+        // 4️⃣ Clear cart
         alert("✅ Order placed successfully!");
         this.cart = [];
         this.name = '';
         this.phone = '';
         this.submitted = true;
 
-        // Optionally reload from DB:
-        // await this.loadLessons(this.search.trim());
       } catch (err) {
         console.error("Checkout error:", err);
-        alert("❌ Server error during checkout. See console.");
+        alert("❌ Server error during checkout.");
       }
     }
   },
 
   mounted() {
-    // initial load (no query)
+    // initial fetch (no query)
     this.loadLessons();
   }
 });

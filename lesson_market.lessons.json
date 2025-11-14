@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbe5"
+  },
+  "topic": "Web Design Basics",
+  "location": "London",
+  "price": 80,
+  "space": 5,
+  "image": "images/Design.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbe6"
+  },
+  "topic": "JavaScript Essentials",
+  "location": "Manchester",
+  "price": 95,
+  "space": 5,
+  "image": "images/JS.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbe7"
+  },
+  "topic": "Vue.js From Zero",
+  "location": "Birmingham",
+  "price": 110,
+  "space": 5,
+  "image": "images/Network.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbe8"
+  },
+  "topic": "Node & Express",
+  "location": "Leeds",
+  "price": 120,
+  "space": 5,
+  "image": "images/Node.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbe9"
+  },
+  "topic": "Database Basics",
+  "location": "Bristol",
+  "price": 85,
+  "space": 5,
+  "image": "images/Database.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbea"
+  },
+  "topic": "UI/UX Principles",
+  "location": "Cardiff",
+  "price": 105,
+  "space": 5,
+  "image": "images/UX.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbeb"
+  },
+  "topic": "React Fundamentals",
+  "location": "Liverpool",
+  "price": 115,
+  "space": 5,
+  "image": "images/React.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbec"
+  },
+  "topic": "Data Structures",
+  "location": "Sheffield",
+  "price": 99,
+  "space": 5,
+  "image": "images/Data_Structure.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbed"
+  },
+  "topic": "Algorithms 101",
+  "location": "Newcastle",
+  "price": 109,
+  "space": 5,
+  "image": "images/Algo.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbee"
+  },
+  "topic": "Cloud 101",
+  "location": "Nottingham",
+  "price": 125,
+  "space": 5,
+  "image": "images/Cloud.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbef"
+  },
+  "topic": "Cybersecurity Intro",
+  "location": "Leicester",
+  "price": 130,
+  "space": 5,
+  "image": "images/Cybersecurity.jpg"
+},
+{
+  "_id": {
+    "$oid": "690de3be2f597f1fd1b7bbf0"
+  },
+  "topic": "Python for AI",
+  "location": "Oxford",
+  "price": 140,
+  "space": 5,
+  "image": "images/Python.jpg"
+}]

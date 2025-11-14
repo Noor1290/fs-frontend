@@ -1,0 +1,215 @@
+{
+	"info": {
+		"_postman_id": "d14f2c54-6063-4a71-b5a2-cc0da17e4334",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48047750",
+		"_collection_link": "https://noorpatel1290-1406851.postman.co/workspace/noor-patel's-Workspace~75d75804-9753-499e-8f5d-93913cedfd88/collection/48047750-d14f2c54-6063-4a71-b5a2-cc0da17e4334?action=share&source=collection_link&creator=48047750"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/api/health",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/api/debug-connection",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"debug-connection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/api/lessons",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/api/search?q=cloud",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "cloud"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"phone\": \"56789012\",\r\n  \"items\": [\r\n    { \"lesson\": \"690de3be2f597f1fd1b7bbe5\", \"spaces\": 2 },\r\n    { \"lesson\": \"690de3be2f597f1fd1b7bbe7\", \"spaces\": 1 }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/api/orders",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"space\": 5,\r\n  \"price\": 120\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/api/lessons/690de3be2f597f1fd1b7bbe7",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"lessons",
+						"690de3be2f597f1fd1b7bbe7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/images/Cloud.jpg",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"images",
+						"Cloud.jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fs-backend-6isw.onrender.com/",
+					"protocol": "https",
+					"host": [
+						"fs-backend-6isw",
+						"onrender",
+						"com"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

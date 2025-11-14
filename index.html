@@ -36,7 +36,7 @@
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 font-poppins">
 
-  <div id="app" v-cloak class="max-w-7xl mx-auto p-6">
+  <div id="app"v-cloak  class="max-w-7xl mx-auto p-6">
     <!-- Header -->
     <header class="flex items-center justify-between gap-4 mb-6">
       <div class="flex items-center gap-3">
@@ -51,7 +51,7 @@
 
       <div class="flex items-center gap-3">
         <!-- Desktop Search -->
-        <search-bar class="hidden md:block" v-model="search" :loading="searching"></search-bar>
+        <search-bar class="hidden md:block" v-model="search" ></search-bar>
 
 
         <!-- Sort Controls -->
@@ -71,10 +71,7 @@
       </div>
     </header>
 
-    <!-- Mobile Search -->
-    <div class="md:hidden mb-4">
-      <search-bar v-model="search"></search-bar>
-    </div>
+
 
     <transition name="fade" mode="out-in">
       <!-- LESSONS PAGE -->
