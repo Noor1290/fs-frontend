@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lesson Market — Coursework Version (No Components)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+
+  <style>[v-cloak]{display:none}</style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-poppins">
+
+<div id="app" v-cloak class="max-w-7xl mx-auto p-6">
+
+  <!-- HEADER -->
+  <header class="flex items-center justify-between mb-8">
+
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 via-fuchsia-500 to-cyan-400 flex items-center justify-center shadow-lg">
+        <i class="fa-solid fa-graduation-cap text-white text-xl"></i>
+      </div>
+      <div>
+        <h1 class="text-3xl font-semibold">Lesson Market</h1>
+        <p class="text-slate-400 text-sm -mt-1">Full Stack Coursework</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+
+      <!-- SEARCH -->
+      <div class="relative hidden md:block">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="search"
+               v-model="searchInput"
+               @input="runSearch"
+               @keyup.enter="runSearch"
+               placeholder="Search lessons..."
+               class="w-72 bg-white/5 border border-white/10 rounded-xl pl-7 pr-9 py-2 text-sm
+                      placeholder:text-slate-400 focus:outline-none focus:border-indigo-400" />
+
+        <button @click="runSearch"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- SORT -->
+      <!-- SORT BAR -->
+<div class="hidden md:flex items-center">
+
+  <!-- Gradient Outer Border -->
+  <div class="p-[2px] rounded-2xl bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-cyan-400 shadow-glow">
+
+    <!-- Inner Container -->
+    <div class="flex items-center gap-3 bg-slate-900/70 backdrop-blur rounded-2xl px-4 py-2 border border-white/10">
+
+      <!-- Label -->
+      <div class="flex items-center gap-2 text-slate-300 text-sm">
+        <i class="fa-solid fa-arrow-up-wide-short text-indigo-300"></i>
+        <span class="font-medium">Sort</span>
+      </div>
+
+      <div class="h-6 w-px bg-white/10"></div>
+
+      <!-- Sort Keys -->
+      <div class="flex items-center gap-2">
+
+        <button
+          v-for="key in ['subject','location','price','spaces']"
+          @click="sortKey = key"
+          :class="[
+            'px-3 py-1.5 rounded-lg text-sm border transition active:scale-95',
+            sortKey === key
+              ? 'bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-slate-900 font-semibold border-transparent shadow-glow'
+              : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 border-white/10'
+          ]">
+
+          <i class="fa-solid mr-1.5"
+             :class="{
+                'fa-book': key==='subject',
+                'fa-location-dot': key==='location',
+                'fa-tags': key==='price',
+                'fa-users': key==='spaces',
+                'text-slate-900': sortKey===key,
+                'text-slate-400': sortKey!==key
+             }">
+          </i>
+
+          {{ key.charAt(0).toUpperCase() + key.slice(1) }}
+
+        </button>
+
+      </div>
+
+      <div class="h-6 w-px bg-white/10"></div>
+
+      <!-- Asc / Desc -->
+      <button
+        @click="sortOrder = sortOrder === 1 ? -1 : 1"
+        class="group relative px-3 py-1.5 rounded-lg border border-white/10 bg-slate-800/60 hover:bg-slate-700/60 active:scale-95 transition">
+
+        <div class="flex items-center gap-2 text-sm">
+
+          <i class="fa-solid fa-arrow-down-short-wide transition-transform"
+             :class="sortOrder === 1
+                     ? 'rotate-0 text-indigo-300'
+                     : 'rotate-180 text-fuchsia-300'">
+          </i>
+
+          <span class="text-slate-200">
+            {{ sortOrder === 1 ? 'Asc' : 'Desc' }}
+          </span>
+        </div>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+      <!-- CART TOGGLE -->
+      <button @click="toggleCart"
+              :disabled="!showCart && cartCount===0"
+              class="relative px-4 py-2 bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-cyan-400 text-slate-900
+                     rounded-xl shadow-glow font-semibold disabled:opacity-40 hover:brightness-110 active:scale-95">
+        <i class="fa-solid" :class="showCart ? 'fa-book-open' : 'fa-cart-shopping'"></i>
+        <span class="ml-1">{{ showCart ? 'View Lessons' : 'Cart' }}</span>
+
+        <span v-if="!showCart && cartCount"
+              class="absolute -top-2 -right-2 bg-white text-slate-900 rounded-full w-6 h-6 grid place-items-center text-xs font-bold">
+          {{ cartCount }}
+        </span>
+      </button>
+
+    </div>
+
+  </header>
+
+  <transition name="fade" mode="out-in">
+
+    <!-- =========================== -->
+    <!-- LESSON PAGE -->
+    <!-- =========================== -->
+    <section v-if="!showCart" key="lessons">
+
+      <p v-if="!sortedLessons.length" class="text-slate-300 mb-4">No lessons found.</p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="l in sortedLessons" :key="l.id"
+             class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4 shadow-xl">
+
+          <img :src="l.image"
+               class="w-full h-40 object-cover rounded-xl mb-3" />
+
+          <div class="flex justify-between items-start">
+            <h3 class="font-semibold">{{ l.subject }}</h3>
+            <p class="font-bold">£{{ l.price }}</p>
+          </div>
+
+          <p class="text-sm text-slate-400">{{ l.location }}</p>
+
+          <p class="mt-2 text-xs"
+             :class="l.spaces > 0 ? 'text-emerald-300' : 'text-rose-400'">
+            {{ l.spaces }} spaces left
+          </p>
+
+          <button @click="addToCart(l)"
+                  :disabled="l.spaces === 0"
+                  class="mt-3 w-full px-3 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500
+                         text-slate-900 font-semibold disabled:opacity-40">
+            Add
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================== -->
+    <!-- CART + CHECKOUT PAGE -->
+    <!-- =========================== -->
+    <section v-else key="cart" class="grid lg:grid-cols-3 gap-6">
+
+      <!-- CART -->
+      <div class="lg:col-span-2 space-y-4">
+
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+          <h2 class="text-xl font-semibold mb-3">Cart Items</h2>
+
+          <div v-if="cart.length">
+            <div v-for="item in cart" :key="item.id"
+                 class="flex justify-between items-center py-3">
+
+              <div>
+                <p class="font-semibold">{{ item.subject }}</p>
+                <p class="text-sm text-slate-400">£{{ item.price }} • Qty: {{ item.qty }}</p>
+              </div>
+
+              <div class="flex gap-2">
+                <button @click="decrement(item.id)" class="px-2 bg-white/10 rounded">-</button>
+                <button @click="increment(item.id)" class="px-2 bg-white/10 rounded">+</button>
+                <button @click="removeById(item.id)" class="px-2 bg-rose-500 text-slate-900 rounded">x</button>
+              </div>
+
+            </div>
+          </div>
+
+          <p v-else class="text-slate-400">Your cart is empty.</p>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="p-4 bg-white/5 border border-white/10 rounded-xl">
+          <p>Total items: {{ cart.reduce((s,i)=>s+i.qty,0) }}</p>
+          <p class="font-semibold">Grand Total: £{{ cartTotal.toFixed(2) }}</p>
+        </div>
+
+      </div>
+
+      <!-- CHECKOUT -->
+      <div class="p-4 bg-white/5 border border-white/10 rounded-2xl h-fit sticky top-8">
+
+        <h2 class="text-xl font-semibold mb-3">Checkout</h2>
+
+        <input v-model="name"
+               placeholder="Your name"
+               class="w-full mb-3 bg-slate-800 border border-white/10 p-2 rounded" />
+
+        <input v-model="phone"
+               placeholder="Phone number"
+               class="w-full mb-3 bg-slate-800 border border-white/10 p-2 rounded" />
+
+        <button @click="checkout"
+                class="w-full py-2 bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-slate-900 rounded font-bold">
+          Pay £{{ cartTotal.toFixed(2) }}
+        </button>
+
+      </div>
+
+    </section>
+
+  </transition>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
