@@ -44,88 +44,82 @@
                placeholder="Search lessons..."
                class="w-72 bg-white/5 border border-white/10 rounded-xl pl-7 pr-9 py-2 text-sm
                       placeholder:text-slate-400 focus:outline-none focus:border-indigo-400" />
-
-        <button @click="runSearch"
-                class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white">
-          <i class="fa-solid fa-arrow-right"></i>
-        </button>
+                      
       </div>
-
-      <!-- SORT -->
       <!-- SORT BAR -->
-<div class="hidden md:flex items-center">
+      <div class="hidden md:flex items-center">
 
-  <!-- Gradient Outer Border -->
-  <div class="p-[2px] rounded-2xl bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-cyan-400 shadow-glow">
+        <!-- Gradient Outer Border -->
+        <div class="p-[2px] rounded-2xl bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-cyan-400 shadow-glow">
 
-    <!-- Inner Container -->
-    <div class="flex items-center gap-3 bg-slate-900/70 backdrop-blur rounded-2xl px-4 py-2 border border-white/10">
+          <!-- Inner Container -->
+          <div class="flex items-center gap-3 bg-slate-900/70 backdrop-blur rounded-2xl px-4 py-2 border border-white/10">
 
-      <!-- Label -->
-      <div class="flex items-center gap-2 text-slate-300 text-sm">
-        <i class="fa-solid fa-arrow-up-wide-short text-indigo-300"></i>
-        <span class="font-medium">Sort</span>
-      </div>
+            <!-- Label -->
+            <div class="flex items-center gap-2 text-slate-300 text-sm">
+              <i class="fa-solid fa-arrow-up-wide-short text-indigo-300"></i>
+              <span class="font-medium">Sort</span>
+            </div>
 
-      <div class="h-6 w-px bg-white/10"></div>
+            <div class="h-6 w-px bg-white/10"></div>
 
-      <!-- Sort Keys -->
-      <div class="flex items-center gap-2">
+            <!-- Sort Keys -->
+            <div class="flex items-center gap-2">
 
-        <button
-          v-for="key in ['subject','location','price','spaces']"
-          @click="sortKey = key"
-          :class="[
-            'px-3 py-1.5 rounded-lg text-sm border transition active:scale-95',
-            sortKey === key
-              ? 'bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-slate-900 font-semibold border-transparent shadow-glow'
-              : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 border-white/10'
-          ]">
+              <button
+                v-for="key in ['subject','location','price','spaces']"
+                @click="sortKey = key"
+                :class="[
+                  'px-3 py-1.5 rounded-lg text-sm border transition active:scale-95',
+                  sortKey === key
+                    ? 'bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-slate-900 font-semibold border-transparent shadow-glow'
+                    : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 border-white/10'
+                ]">
 
-          <i class="fa-solid mr-1.5"
-             :class="{
-                'fa-book': key==='subject',
-                'fa-location-dot': key==='location',
-                'fa-tags': key==='price',
-                'fa-users': key==='spaces',
-                'text-slate-900': sortKey===key,
-                'text-slate-400': sortKey!==key
-             }">
-          </i>
+                <i class="fa-solid mr-1.5"
+                  :class="{
+                      'fa-book': key==='subject',
+                      'fa-location-dot': key==='location',
+                      'fa-tags': key==='price',
+                      'fa-users': key==='spaces',
+                      'text-slate-900': sortKey===key,
+                      'text-slate-400': sortKey!==key
+                  }">
+                </i>
 
-          {{ key.charAt(0).toUpperCase() + key.slice(1) }}
+                {{ key.charAt(0).toUpperCase() + key.slice(1) }}
 
-        </button>
+              </button>
 
-      </div>
+            </div>
 
-      <div class="h-6 w-px bg-white/10"></div>
+            <div class="h-6 w-px bg-white/10"></div>
 
-      <!-- Asc / Desc -->
-      <button
-        @click="sortOrder = sortOrder === 1 ? -1 : 1"
-        class="group relative px-3 py-1.5 rounded-lg border border-white/10 bg-slate-800/60 hover:bg-slate-700/60 active:scale-95 transition">
+            <!-- Asc / Desc -->
+            <button
+              @click="sortOrder = sortOrder === 1 ? -1 : 1"
+              class="group relative px-3 py-1.5 rounded-lg border border-white/10 bg-slate-800/60 hover:bg-slate-700/60 active:scale-95 transition">
 
-        <div class="flex items-center gap-2 text-sm">
+              <div class="flex items-center gap-2 text-sm">
 
-          <i class="fa-solid fa-arrow-down-short-wide transition-transform"
-             :class="sortOrder === 1
-                     ? 'rotate-0 text-indigo-300'
-                     : 'rotate-180 text-fuchsia-300'">
-          </i>
+                <i class="fa-solid fa-arrow-down-short-wide transition-transform"
+                  :class="sortOrder === 1
+                          ? 'rotate-0 text-indigo-300'
+                          : 'rotate-180 text-fuchsia-300'">
+                </i>
 
-          <span class="text-slate-200">
-            {{ sortOrder === 1 ? 'Asc' : 'Desc' }}
-          </span>
+                <span class="text-slate-200">
+                  {{ sortOrder === 1 ? 'Asc' : 'Desc' }}
+                </span>
+              </div>
+
+            </button>
+
+          </div>
+
         </div>
 
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
+      </div>
 
 
       <!-- CART TOGGLE -->
@@ -239,9 +233,15 @@
                class="w-full mb-3 bg-slate-800 border border-white/10 p-2 rounded" />
 
         <button @click="checkout"
-                class="w-full py-2 bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-slate-900 rounded font-bold">
+          :disabled="!validCheckout"
+          class="w-full py-2 rounded font-bold text-slate-900
+                bg-gradient-to-r from-indigo-500 to-fuchsia-500
+                disabled:from-slate-700 disabled:to-slate-700
+                disabled:text-slate-500 disabled:cursor-not-allowed
+                disabled:opacity-40">
           Pay £{{ cartTotal.toFixed(2) }}
         </button>
+
 
       </div>
 

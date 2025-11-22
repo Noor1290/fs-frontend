@@ -35,8 +35,14 @@ new Vue({
       const map = {};
       this.lessons.forEach(l => map[l.id] = l.spaces);
       return map;
-    }
+    },
+    validCheckout() {
+  return /^[A-Za-z\s]+$/.test(this.name.trim()) &&
+         /^\d+$/.test(this.phone.trim()) &&
+         this.cart.length > 0;
+}
   },
+  
 
   methods: {
     runSearch() {
@@ -178,6 +184,7 @@ new Vue({
       }
     }
   },
+  
 
   mounted() {
     this.loadLessons();
