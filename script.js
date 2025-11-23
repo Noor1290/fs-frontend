@@ -37,11 +37,11 @@ new Vue({
       return map;
     },
     validCheckout() {
-  return /^[A-Za-z\s]+$/.test(this.name.trim()) &&
-         /^\d+$/.test(this.phone.trim()) &&
-         this.cart.length > 0;
-}
-  },
+      return /^[A-Za-z\s]+$/.test(this.name.trim()) &&
+            /^\d+$/.test(this.phone.trim()) &&
+            this.cart.length > 0;
+    }
+      },
   
 
   methods: {
