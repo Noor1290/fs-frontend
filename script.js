@@ -165,8 +165,11 @@ new Vue({
           await fetch(`${API_BASE}/lessons/${item.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ space: lesson.spaces })
+            body: JSON.stringify({
+              space: lesson.spaces - item.qty   // 👈 correct subtraction
+            })
           });
+
         }
 
         alert("Order placed!");
